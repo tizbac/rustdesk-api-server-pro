@@ -7,6 +7,9 @@ import { useTable } from '@/hooks/common/table';
 import { AuditTypeOptions } from '@/constants/business';
 import TableHeader from './components/table-header.vue';
 import AuditBaseLogsSearch from './components/search.vue';
+import { fetchConfig } from '@/service/api/config';
+
+import { onMounted, ref, h } from 'vue';
 
 const appStore = useAppStore();
 
@@ -15,6 +18,23 @@ const auditTypes: any = {
   '1': 'error',
   '2': 'success'
 };
+
+// Fetch web client URL from config
+const webClientUrl = ref<string>('');
+
+const fetchWebClientUrl = async () => {
+  try {
+    const res = await fetchConfig();
+    webClientUrl.value = res.data.webClientUrl;
+  } catch (error) {
+    console.error('Failed to fetch web client URL:', error);
+  }
+};
+
+// Fetch config on component mount
+onMounted(() => {
+  fetchWebClientUrl();
+});
 
 const {
   columns,
@@ -48,6 +68,21 @@ const {
       key: 'rustdesk_id',
       title: $t('dataMap.device.rustdesk_id'),
       align: 'center',
+      render: (row) => {
+        if (!webClientUrl.value) return row.rustdesk_id;
+        return h(
+          'a',
+          {
+            href: `${webClientUrl.value}/#/?id=${row.rustdesk_id}`,
+            target: '_blank',
+            style: {
+              color: 'blue',
+              textDecoration: 'underline'
+            }
+          },
+          row.rustdesk_id
+        );
+      }
     },
     {
       key: 'hostname',

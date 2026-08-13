@@ -15,6 +15,7 @@ type ServerConfig struct {
 	HttpConfig *HttpConfig `yaml:"httpConfig"`
 	SmtpConfig *SmtpConfig `yaml:"smtpConfig"`
 	JobsConfig *JobsConfig `yaml:"jobsConfig"`
+	WebClient  *WebClientConfig `yaml:"webClient"`
 }
 
 type DbConfig struct {
@@ -47,6 +48,10 @@ type JobsConfig struct {
 	DeviceCheckJob *DeviceCheckJob `yaml:"deviceCheckJob"`
 }
 
+type WebClientConfig struct {
+	Url string `yaml:"url"`
+}
+
 var (
 	wd, _    = os.Getwd()
 	yamlFile = path.Join(wd, "server.yaml")
@@ -66,6 +71,9 @@ func GetDefaultServerConfig() *ServerConfig {
 			StaticDir: "dist",
 		},
 		SignKey: util.RandomString(32),
+		WebClient: &WebClientConfig{
+			Url: "https://rustdesk.etitech.net/webclient",
+		},
 		JobsConfig: &JobsConfig{
 			DeviceCheckJob: &DeviceCheckJob{
 				Duration: 30,

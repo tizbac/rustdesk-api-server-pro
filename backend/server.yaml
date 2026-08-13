@@ -23,3 +23,6 @@ smtpConfig:
 jobsConfig:
   deviceCheckJob:
     duration: 30
+
+webClient:
+  url: "https://rustdesk.etitech.net/webclient"
