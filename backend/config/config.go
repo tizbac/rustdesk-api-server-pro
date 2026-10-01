@@ -16,6 +16,7 @@ type ServerConfig struct {
 	SmtpConfig *SmtpConfig `yaml:"smtpConfig"`
 	JobsConfig *JobsConfig `yaml:"jobsConfig"`
 	WebClient  *WebClientConfig `yaml:"webClient"`
+	Ldap       *LdapConfig  `yaml:"ldap"`
 }
 
 type DbConfig struct {
@@ -52,6 +53,19 @@ type WebClientConfig struct {
 	Url string `yaml:"url"`
 }
 
+type LdapConfig struct {
+	Enabled             bool   `yaml:"enabled"`
+	Host                string `yaml:"host"`
+	Port                int    `yaml:"port"`
+	UseTLS              bool   `yaml:"use_tls"`
+	StartTLS            bool   `yaml:"start_tls"`
+	BindDN              string `yaml:"bind_dn"`
+	BindPassword        string `yaml:"bind_password"`
+	BaseDN              string `yaml:"base_dn"`
+	UserFilter          string `yaml:"user_filter"`
+	InsecureSkipVerify  bool   `yaml:"insecure_skip_verify"`
+}
+
 var (
 	wd, _    = os.Getwd()
 	yamlFile = path.Join(wd, "server.yaml")
@@ -73,6 +87,13 @@ func GetDefaultServerConfig() *ServerConfig {
 		SignKey: util.RandomString(32),
 		WebClient: &WebClientConfig{
 			Url: "https://rustdesk.etitech.net/webclient",
+		},
+		Ldap: &LdapConfig{
+			Enabled:            false,
+			Port:               389,
+			StartTLS:           true,
+			UserFilter:         "(sAMAccountName=%s)",
+			InsecureSkipVerify: false,
 		},
 		JobsConfig: &JobsConfig{
 			DeviceCheckJob: &DeviceCheckJob{

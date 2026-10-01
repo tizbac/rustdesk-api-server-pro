@@ -3,6 +3,7 @@ package admin
 import (
 	"rustdesk-api-server-pro/app/form/admin"
 	"rustdesk-api-server-pro/app/model"
+	"rustdesk-api-server-pro/app/service"
 	"rustdesk-api-server-pro/config"
 	"rustdesk-api-server-pro/helper/captcha"
 	"rustdesk-api-server-pro/util"
@@ -23,6 +24,48 @@ func (c *AuthController) PostAuthLogin() mvc.Result {
 	err := c.Ctx.ReadJSON(&loginForm)
 	if err != nil {
 		return c.Error(nil, err.Error())
+	}
+
+	ldapService := service.NewLdapService()
+
+	if ldapService.IsEnabled() {
+		_, err := ldapService.Authenticate(loginForm.Username, loginForm.Password)
+		if err == nil {
+			var user model.User
+			get, err := c.Db.Where("username = ? and is_admin = 1", loginForm.Username).Get(&user)
+			if err != nil {
+				return c.Error(nil, err.Error())
+			}
+
+			if !get {
+				return c.Error(nil, "UserNotExists")
+			}
+
+			_, _ = c.Db.Where("user_id = ? and status = 1 and is_admin = 1", user.Id).Cols("status").Update(&model.AuthToken{
+				Status: 0,
+			})
+
+			signStr := strconv.Itoa(user.Id) + user.Username + time.Now().String()
+			token := util.HmacSha256(signStr, c.Cfg.SignKey)
+			expired := 2 * time.Hour
+
+			authToken := &model.AuthToken{
+				UserId:  user.Id,
+				Token:   token,
+				Expired: time.Now().Add(expired),
+				IsAdmin: true,
+				Status:  1,
+			}
+
+			_, err = c.Db.Insert(authToken)
+			if err != nil {
+				return c.Error(nil, err.Error())
+			}
+
+			return c.Success(iris.Map{
+				"token": token,
+			}, "ok")
+		}
 	}
 
 	if !captcha.VerifyCode(loginForm.CaptchaId, loginForm.Code) {
@@ -75,5 +118,12 @@ func (c *AuthController) GetAuthCaptcha() mvc.Result {
 	return c.Success(iris.Map{
 		"id":  id,
 		"img": img,
+	}, "ok")
+}
+
+func (c *AuthController) GetAuthLoginConfig() mvc.Result {
+	ldapService := service.NewLdapService()
+	return c.Success(iris.Map{
+		"ldapEnabled": ldapService.IsEnabled(),
 	}, "ok")
 }

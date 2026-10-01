@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { $t } from '@/locales';
 import { useNaiveForm } from '@/hooks/common/form';
 import { useAuthStore } from '@/store/modules/auth';
-import { fetchCaptcha } from '@/service/api/auth';
+import { fetchCaptcha, fetchAuthLoginConfig } from '@/service/api/auth';
 
 defineOptions({
   name: 'PwdLogin'
@@ -24,8 +24,12 @@ const captcha: Api.Auth.Captcha = reactive({
   img: ''
 });
 
+const ldapEnabled = ref(false);
+
+const isLdapLogin = computed(() => ldapEnabled.value);
+
 const rules = computed<Record<keyof Api.Form.LoginForm, App.Global.FormRule[]>>(() => {
-  return {
+  const baseRules: Record<keyof Api.Form.LoginForm, App.Global.FormRule[]> = {
     username: [
       {
         required: true,
@@ -37,26 +41,31 @@ const rules = computed<Record<keyof Api.Form.LoginForm, App.Global.FormRule[]>>(
         required: true,
         message: '密码不能为空'
       }
-    ],
-    code: [
-      {
-        required: true,
-        message: '验证码不能为空'
-      }
-    ],
-    captchaId: [
-      {
-        required: true,
-        message: '验证码不能为空'
-      }
     ]
   };
+
+  if (!isLdapLogin.value) {
+    baseRules.code = [
+      {
+        required: true,
+        message: '验证码不能为空'
+      }
+    ];
+    baseRules.captchaId = [
+      {
+        required: true,
+        message: '验证码不能为空'
+      }
+    ];
+  }
+
+  return baseRules;
 });
 
 async function handleSubmit() {
   await validate();
   const err = await authStore.login(model);
-  if (err?.response?.data.message === 'CaptchaError') {
+  if (!isLdapLogin.value && err?.response?.data.message === 'CaptchaError') {
     handleCaptcha();
   }
 }
@@ -67,8 +76,21 @@ async function handleCaptcha() {
   captcha.img = c.data?.img || '';
   model.captchaId = captcha.id || '';
 }
+
+async function fetchLoginConfig() {
+  try {
+    const res = await fetchAuthLoginConfig();
+    ldapEnabled.value = res.data?.ldapEnabled || false;
+  } catch {
+    ldapEnabled.value = false;
+  }
+}
+
 onMounted(() => {
-  handleCaptcha();
+  fetchLoginConfig();
+  if (!isLdapLogin.value) {
+    handleCaptcha();
+  }
 });
 </script>
 
@@ -85,7 +107,7 @@ onMounted(() => {
         :placeholder="$t('page.login.common.passwordPlaceholder')"
       />
     </NFormItem>
-    <NFormItem path="code">
+    <NFormItem v-if="!isLdapLogin" path="code">
       <NInput v-model:value="model.code" :clearable="true" :placeholder="$t('page.login.common.codePlaceholder')" />
       <div class="pl-8px">
         <img width="152" height="40" class="cursor-pointer" :src="captcha.img" @click="handleCaptcha" />

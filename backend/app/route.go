@@ -30,6 +30,7 @@ func SetRoute(app *iris.Application) {
 	adminParty := app.Party("/admin")
 	adminMvc := mvc.New(adminParty)
 	adminMvc.Handle(new(admin.AuthController))
+	adminMvc.Handle(new(admin.IndexController))
 
 	adminWithAuthParty := app.Party("/admin")
 	adminWithAuthParty.Use(middleware.AdminAuth(app))

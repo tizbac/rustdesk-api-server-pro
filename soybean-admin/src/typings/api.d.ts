@@ -60,6 +60,10 @@ declare namespace Api {
       roles: string[];
       buttons: string[];
     }
+
+    interface LoginConfig {
+      ldapEnabled: boolean;
+    }
   }
 
   namespace Home {
