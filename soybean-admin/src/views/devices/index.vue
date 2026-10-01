@@ -73,7 +73,7 @@ const {
         return h(
           'a',
           {
-            href: `${webClientUrl.value}/#/?id=${row.rustdesk_id}`,
+            href: `${webClientUrl.value}?id=${row.rustdesk_id}`,
             target: '_blank',
             style: {
               color: 'blue',
