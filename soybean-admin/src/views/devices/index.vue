@@ -1,12 +1,30 @@
 <script setup lang="tsx">
 import { fetchDevicesList } from '@/service/api/devices';
+import { fetchConfig } from '@/service/api/config';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable } from '@/hooks/common/table';
 import TableHeader from './components/table-header.vue';
 import AuditBaseLogsSearch from './components/search.vue';
+import { onMounted, ref, h } from 'vue';
 
 const appStore = useAppStore();
+
+// url of the web client the device ids open in (server.yaml: webClient.url)
+const webClientUrl = ref<string>('');
+
+const fetchWebClientUrl = async () => {
+  try {
+    const res = await fetchConfig();
+    webClientUrl.value = res.data.webClientUrl;
+  } catch (error) {
+    console.error('Failed to fetch web client URL:', error);
+  }
+};
+
+onMounted(() => {
+  fetchWebClientUrl();
+});
 
 const {
   columns,
@@ -39,7 +57,22 @@ const {
     {
       key: 'rustdesk_id',
       title: $t('dataMap.device.rustdesk_id'),
-      align: 'center'
+      align: 'center',
+      render: row => {
+        if (!webClientUrl.value) return row.rustdesk_id;
+        return h(
+          'a',
+          {
+            href: `${webClientUrl.value}?id=${row.rustdesk_id}`,
+            target: '_blank',
+            style: {
+              color: 'blue',
+              textDecoration: 'underline'
+            }
+          },
+          row.rustdesk_id
+        );
+      }
     },
     {
       key: 'hostname',
