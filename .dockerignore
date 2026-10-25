@@ -1,0 +1,6 @@
+# nothing that is rebuilt inside the image belongs to the build context
+**/node_modules
+build
+rustdesk/target
+rustdesk/flutter/build
+rustdesk/rustdesk-*.tar.gz

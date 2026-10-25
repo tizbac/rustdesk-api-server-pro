@@ -6,6 +6,6 @@ services:
       - "ADMIN_USER=youruser" # optional
       - "ADMIN_PASS=yourpassword" # optional
     volumes:
-      - ./server.yaml:/app/server.yaml
+      - ./server.yaml:/app/data/server.yaml
     network_mode: host
     restart: unless-stopped

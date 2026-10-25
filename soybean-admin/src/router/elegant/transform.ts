@@ -163,6 +163,7 @@ function transformElegantRouteToVueRoute(
 const routeMap: RouteMap = {
   "root": "/",
   "not-found": "/:pathMatch(.*)*",
+  "rustdesk_web": "/rustdesk-web",
   "403": "/403",
   "404": "/404",
   "500": "/500",

@@ -166,7 +166,8 @@ const local: App.I18n.Schema = {
     system_mail: 'Mail Managment',
     audit_baselogs: 'Base Logs',
     audit_filetransferlogs: 'File Transfer Logs',
-    devices: 'Devices'
+    devices: 'Devices',
+    rustdesk_web: 'RustDesk Web'
   },
   page: {
     login: {

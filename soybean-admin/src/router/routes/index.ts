@@ -8,7 +8,19 @@ import { transformElegantRoutesToVueRoutes } from '../elegant/transform';
  *
  * @link https://github.com/soybeanjs/elegant-router?tab=readme-ov-file#custom-route
  */
-const customRoutes: CustomRoute[] = [];
+const customRoutes: CustomRoute[] = [
+  {
+    name: 'rustdesk_web',
+    path: '/rustdesk-web',
+    meta: {
+      title: 'rustdesk_web',
+      i18nKey: 'route.rustdesk_web',
+      icon: 'mdi:remote-desktop',
+      order: 6,
+      href: '/web/'
+    }
+  }
+];
 
 /** create routes when the auth route mode is static */
 export function createStaticRoutes() {

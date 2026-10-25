@@ -18,6 +18,8 @@ Rustdesk Api Server Pro
     - 两步验证 & 邮件验证码
     - 会话管理
     - 日志审计
+- 从公开RustDesk源码从零编写的 RustDesk 网页版 V2（`/web`，WebCodecs 视频解码）
+- LDAP 登录（可选）
 - 轻量化&跨平台
     - 最小sqlite即可
     - 支持主流操作系统和架构
@@ -104,6 +106,29 @@ smtpConfig:
 jobsConfig:
   deviceCheckJob:
     duration: 30
+
+# 内置RustDesk网页客户端，通过 /web 访问
+rustdeskWebConfig:
+  server: "" # 注册/ID服务器，例如 "hbbs.example.com:21116"，留空使用公共服务器
+  relay: "" # 中继服务器，例如 "hbbr.example.com:21115"，留空使用注册服务器
+  key: "" # RustDesk服务器公钥（id_ed25519.pub内容），留空使用公共服务公钥
+
+# 可选，设备列表中打开网页客户端所使用的地址（默认 /web/）
+webClient:
+  url: "/web/"
+
+# 可选，LDAP登录
+ldap:
+  enabled: false
+  host: "dc.example.com"
+  port: 389
+  use_tls: false
+  start_tls: true
+  bind_dn: "CN=admin,OU=Service,DC=example,DC=com"
+  bind_password: "password"
+  base_dn: "DC=example,DC=com"
+  user_filter: "(sAMAccountName=%s)"
+  insecure_skip_verify: false
 EOF
 ```
 3. 运行镜像
@@ -115,7 +140,7 @@ docker run \
 -e ADMIN_PASS=yourpassword \ #管理员密码（可选）
 -e TZ=Asia/Shanghai \ #必须与 server.yaml 中的"timeZone"设置匹配
 -p 8080:8080 \
--v /your/path/server.yaml:/app/server.yaml \
+-v /your/path:/app/data \
 ghcr.io/lantongxue/rustdesk-api-server-pro:latest
 ```
 4. 添加管理员账号（如果设置了用于初始化管理员账号密码的环境变量，此步骤可以忽略，但我仍推荐你使用此方式创建管理员账号，而不是通过环境变量初始化）
@@ -124,7 +149,37 @@ docker exec rustdesk-api-server-pro rustdesk-api-server-pro user add admin yourp
 ```
 > 容器镜像默认监听`8080`端口
 
-> 默认配置文件路径`/app/server.yaml`，可以通过`-v`指定您自己的配置文件
+> 默认配置文件路径`/app/data/server.yaml`，可以通过`-v`指定您自己的配置文件
+
+### RustDesk 网页版（V2）
+镜像内已内置 **RustDesk 网页版 V2**：基于公开的 RustDesk 源码（[rustdesk](https://github.com/tizbac/rustdesk) 仓库中的协议定义与 Flutter 应用）从零编写的第二代网页客户端，并非上游发布的 preview 网页版本。视频解码使用 WebCodecs（浏览器支持时走硬件加速），不支持时回退到 ffmpeg.wasm。
+
+它在镜像构建时由 `rustdesk/build_web.sh` 编译，访问地址为 `http://<host>:8080/web`，Web-UI 菜单中的 `RustDesk 网页版` 同样指向它。设备列表中的 RustDesk ID 会以 `?id=<rustdesk_id>` 打开客户端，直接发起连接。
+
+客户端连接的服务器信息来自 `server.yaml` 的 `rustdeskWebConfig` 配置，服务端会以 `/web/rustdeskWeb.json` 返回：
+
+```yaml
+rustdeskWebConfig:
+  server: "hbbs.example.com:21116" # 注册/ID服务器
+  relay: "hbbr.example.com:21115" # 中继服务器，留空使用注册服务器
+  key: "your-public-key" # id_ed25519.pub内容
+```
+
+全部留空则使用RustDesk公共服务。
+
+### 构建镜像压缩包
+如果服务器上无法访问镜像仓库，可以在构建机器上打包镜像，再复制到服务器导入：
+
+```shell
+./docker/build-image.sh                       # 生成 build/rustdesk-api-server-pro-latest-<arch>.tar.gz
+./docker/build-image.sh name:tag              # 指定镜像名称和标签
+PLATFORM=linux/arm64 ./docker/build-image.sh  # 构建其他架构
+```
+
+在服务器上执行：
+```shell
+docker load -i rustdesk-api-server-pro-latest-x86_64.tar.gz
+```
 
 ### Docker compose
 ```yaml
@@ -137,7 +192,7 @@ services:
       - "ADMIN_PASS=yourpassword"
       - "TZ=Asia/Shanghai"
     volumes:
-      - ./server.yaml:/app/server.yaml
+      - ./server.yaml:/app/data/server.yaml
     network_mode: host
     restart: unless-stopped
 ```
@@ -155,6 +210,7 @@ services:
 - Golang >= 1.21.4
 - NodeJs ~= 推荐最新LTS版本
 - pnpm ~= 最新版
+- Flutter 3.24.5 和 yarn（仅编译RustDesk网页客户端时需要）
 
 ### 编译
 1. 获取源码
@@ -173,6 +229,13 @@ cd backend && go build
 ```shell
 cd soybean-admin && pnpm i && pnpm build
 ```
+
+4. 编译RustDesk网页客户端（可选，需要Flutter和yarn）
+```shell
+git submodule update --init rustdesk
+make web
+```
+请在 `make build` 之后执行，编译结果会复制到可执行文件旁的 `build/web` 目录，由服务端在 `/web` 提供访问。
 
 ### 运行
 

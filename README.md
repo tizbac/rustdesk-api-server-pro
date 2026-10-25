@@ -31,6 +31,8 @@ CDN acceleration and security protection for his project are sponsored by Tencen
   - 2FA & Email Verify Code
   - Session Management
   - Log Audit
+- RustDesk Web V2 (`/web`), written from scratch from the public RustDesk sources, WebCodecs video decoding
+- LDAP login (optional)
 - Lightweight & Cross Platform
   - Minimal sqlite
   - Support for major operating systems and architectures
@@ -117,7 +119,30 @@ smtpConfig:
 
 jobsConfig:
   deviceCheckJob:
-  duration: 30
+    duration: 30
+
+# the embedded rustdesk web client, served on /web
+rustdeskWebConfig:
+  server: "" # rendezvous/id server, e.g. "hbbs.example.com:21116", empty means the public rustdesk server
+  relay: "" # relay server, e.g. "hbbr.example.com:21115", empty means the rendezvous server
+  key: "" # the public key of your rustdesk server (id_ed25519.pub), empty means the public rustdesk key
+
+# optional, url used by the devices list to open a peer in a web client (default /web/)
+webClient:
+  url: "/web/"
+
+# optional, ldap login
+ldap:
+  enabled: false
+  host: "dc.example.com"
+  port: 389
+  use_tls: false
+  start_tls: true
+  bind_dn: "CN=admin,OU=Service,DC=example,DC=com"
+  bind_password: "password"
+  base_dn: "DC=example,DC=com"
+  user_filter: "(sAMAccountName=%s)"
+  insecure_skip_verify: false
 EOF
 
 ```
@@ -144,6 +169,36 @@ docker exec rustdesk-api-server-pro rustdesk-api-server-pro user add admin yourp
 > The container image listens on port `8080` by default.
 
 > Default configuration file path `/app/data/server.yaml`, you can specify your own configuration file with `-v`.
+
+### RustDesk Web (V2)
+The image also contains **RustDesk Web V2**: a second-generation web client written from scratch on top of the public RustDesk sources (the protocol definitions and the Flutter app of the [rustdesk](https://github.com/tizbac/rustdesk) fork), not the preview web build published by upstream. Video is decoded with WebCodecs (hardware accelerated where the browser supports it), falling back to ffmpeg.wasm otherwise.
+
+It is compiled by `rustdesk/build_web.sh` during the image build, served at `http://<host>:8080/web` and linked as `RustDesk Web` in the Web-UI menu. In the devices list, a RustDesk ID opens the client with `?id=<rustdesk_id>` so it connects right away.
+
+The client takes its server settings from the `rustdeskWebConfig` section of `server.yaml`, which the server serves as `/web/rustdeskWeb.json`:
+
+```yaml
+rustdeskWebConfig:
+  server: "hbbs.example.com:21116" # rendezvous/id server
+  relay: "hbbr.example.com:21115" # relay server, empty means the rendezvous server
+  key: "your-public-key" # content of id_ed25519.pub
+```
+
+Leave the values empty to use the public RustDesk servers.
+
+### Building the image archive
+To deploy without a registry, build the image on a build machine and copy the archive to the server:
+
+```shell
+./docker/build-image.sh                       # -> build/rustdesk-api-server-pro-latest-<arch>.tar.gz
+./docker/build-image.sh name:tag              # custom name:tag
+PLATFORM=linux/arm64 ./docker/build-image.sh  # build for another architecture
+```
+
+On the server:
+```shell
+docker load -i rustdesk-api-server-pro-latest-x86_64.tar.gz
+```
 
 ### Docker compose
 
@@ -197,6 +252,13 @@ cd backend && go build
 ```shell
 cd soybean-admin && pnpm i && pnpm build
 ```
+
+4. Build the rustdesk web client (optional, needs Flutter and yarn)
+```shell
+git submodule update --init rustdesk
+make web
+```
+Run it after `make build`: the client is copied to `build/web` next to the api-server binary, which serves it on `/web`.
 
 ### Run
 

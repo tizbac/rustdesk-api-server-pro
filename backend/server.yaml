@@ -24,3 +24,25 @@ smtpConfig:
 jobsConfig:
   deviceCheckJob:
     duration: 30
+
+# the embedded rustdesk web client (served on /web), it is configured by the server
+rustdeskWebConfig:
+  server: "" # rustdesk rendezvous server, e.g. "hbbs.example.com:21116", empty means the public rustdesk server
+  relay: "" # rustdesk relay server, e.g. "hbbr.example.com:21115", empty means the rendezvous server
+  key: "" # the base64 encoded public key of your rustdesk server (id_ed25519.pub), empty means the public rustdesk key
+
+# the url used by the devices list to open a peer in the web client
+webClient:
+  url: "/web/"
+
+ldap:
+  enabled: false
+  host: "dc.example.com"
+  port: 389
+  use_tls: false
+  start_tls: true
+  bind_dn: "CN=admin,OU=Service,DC=example,DC=com"
+  bind_password: "password"
+  base_dn: "DC=example,DC=com"
+  user_filter: "(sAMAccountName=%s)"
+  insecure_skip_verify: false

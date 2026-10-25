@@ -17,6 +17,7 @@ declare module "@elegant-router/types" {
   export type RouteMap = {
     "root": "/";
     "not-found": "/:pathMatch(.*)*";
+    "rustdesk_web": "/rustdesk-web";
     "403": "/403";
     "404": "/404";
     "500": "/500";
@@ -53,6 +54,7 @@ declare module "@elegant-router/types" {
     RouteKey,
     | "root"
     | "not-found"
+    | "rustdesk_web"
   >;
 
   /**
@@ -84,6 +86,7 @@ declare module "@elegant-router/types" {
     CustomRouteKey,
     | "root"
     | "not-found"
+    | "rustdesk_web"
   >;
 
   /**
@@ -113,6 +116,7 @@ declare module "@elegant-router/types" {
     CustomRouteKey,
     | "root"
     | "not-found"
+    | "rustdesk_web"
   >;
 
   /**
