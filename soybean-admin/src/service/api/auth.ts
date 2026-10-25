@@ -23,6 +23,10 @@ export function fetchCaptcha() {
   return request<Api.Auth.Captcha>({ url: '/auth/captcha' });
 }
 
+export function fetchAuthLoginConfig() {
+  return request<{ ldapEnabled: boolean }>({ url: '/auth/login-config' });
+}
+
 /** Get user info */
 export function fetchGetUserInfo() {
   return request<Api.Auth.UserInfo>({ url: '/userinfo' });
