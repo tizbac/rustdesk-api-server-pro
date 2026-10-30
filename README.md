@@ -143,6 +143,7 @@ ldap:
   base_dn: "DC=example,DC=com"
   user_filter: "(sAMAccountName=%s)"
   insecure_skip_verify: false
+  active_directory: false # Microsoft AD: a bare bind account is then bound as an UPN
 EOF
 
 ```
@@ -185,6 +186,22 @@ rustdeskWebConfig:
 ```
 
 Leave the values empty to use the public RustDesk servers.
+
+### Settings page
+
+The **Impostazioni / Settings** page (gear icon at the bottom of the side menu) configures the appliance without touching `server.yaml`. `server.yaml` only provides the defaults: everything saved in the page is stored in the `system_settings` table and takes precedence, and it is applied at runtime.
+
+| Section | What it controls | When it is read |
+| --- | --- | --- |
+| RustDesk Web | rendezvous `server`, `relay`, `key`, and the URL used by the devices list | `/web/rustdeskWeb.json` is generated on every request |
+| Timezone | `Created At` / `Closed At` of the audit and session tables | live, for the records written from then on |
+| LDAP / Active Directory | enable LDAP login, host, port, LDAPS/StartTLS, bind DN, base DN, user filter, certificate check, AD mode | every login attempt |
+
+The LDAP section has a **Prova bind / Test bind** button: it connects with the values currently in the form (nothing is saved), reports the connection, the bind, whether the server is an Active Directory (read from the root DSE) and how many entries the user filter returns, so you can verify a directory before saving it.
+
+When Active Directory is enabled and the bind DN is a bare account name (no comma), it is also tried as an UPN built from the base DN, for example `svcaccount` becomes `svcaccount@example.com`.
+
+Use `Ripristina valori yaml / Reset to yaml defaults` to drop every override and go back to the file.
 
 ### Building the image archive
 To deploy without a registry, build the image on a build machine and copy the archive to the server:

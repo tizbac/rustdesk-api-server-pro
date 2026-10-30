@@ -1,3 +1,5 @@
 .idea
 .DS_Store
 build
+# written by the go tests when server.yaml is missing
+backend/test/admin/server.yaml

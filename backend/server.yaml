@@ -46,3 +46,4 @@ ldap:
   base_dn: "DC=example,DC=com"
   user_filter: "(sAMAccountName=%s)"
   insecure_skip_verify: false
+  active_directory: false # set true for Microsoft AD, a bare bind account is then bound as an UPN

@@ -168,7 +168,8 @@ const local: App.I18n.Schema = {
     audit_baselogs: '基础日志',
     audit_filetransferlogs: '文件传输日志',
     devices: '设备管理',
-    rustdesk_web: 'RustDesk 网页版'
+    rustdesk_web: 'RustDesk 网页版',
+    settings: '设置'
   },
   page: {
     login: {
@@ -240,7 +241,52 @@ const local: App.I18n.Schema = {
       },
       mailLog: {
         info: '详情'
-      }
+      },
+    },
+    settings: {
+      title: '设置',
+      intro: 'server.yaml 只提供初始值：这里保存的内容优先级更高，无需修改文件。',
+      yamlFile: 'Yaml 文件',
+      serverTime: '服务器时间',
+      savedAt: '上次保存',
+      save: '保存',
+      saved: '设置已保存',
+      saveFailed: '保存失败',
+      reset: '恢复 yaml 默认值',
+      resetSuccess: '已从 server.yaml 恢复默认值',
+      resetFailed: '恢复失败',
+      rustdeskWeb: 'RustDesk 网页版',
+      rustdeskWebHint: '这些值写入 /web/rustdeskWeb.json，供浏览器中的 RustDesk 客户端使用。',
+      server: '服务器 (hbbs)',
+      relay: '中继 (hbbr)',
+      key: '公钥',
+      webClientUrl: '网页客户端地址',
+      webClientStatus: '网页客户端',
+      webClientReady: '网页客户端已安装，可通过 /web/ 访问',
+      webClientMissing: '网页客户端不存在：把 RustDesk 构建结果复制到可执行文件旁边的 web 目录。',
+      openClient: '打开客户端',
+      timezone: '时区',
+      timezoneCustom: 'IANA 时区',
+      timezoneHint: '用于审计的 Created At / Closed At 列；已保存的记录保持原值。',
+      ldap: 'LDAP / Active Directory',
+      ldapEnabled: 'LDAP 登录',
+      activeDirectory: 'Active Directory',
+      host: '主机',
+      port: '端口',
+      bindDn: 'Bind DN 或账户',
+      bindPassword: 'Bind 密码',
+      baseDn: 'Base DN',
+      userFilter: '用户过滤',
+      useTls: 'LDAPS（直接 TLS）',
+      startTls: 'StartTLS',
+      insecureSkipVerify: '跳过证书验证',
+      testUsername: '测试用户名',
+      testUsernamePlaceholder: '测试用户名（可选）',
+      testBind: '测试绑定',
+      testSuccess: '绑定成功',
+      testFailed: '绑定失败',
+      adDetected: '服务器识别为 Active Directory',
+      ldapHint: '测试不会保存任何内容：先测试，再保存。'
     }
   },
   dropdown: {

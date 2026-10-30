@@ -168,7 +168,8 @@ const local: App.I18n.Schema = {
     audit_baselogs: 'Base Logs',
     audit_filetransferlogs: 'File Transfer Logs',
     devices: 'Devices',
-    rustdesk_web: 'RustDesk Web'
+    rustdesk_web: 'RustDesk Web',
+    settings: 'Settings'
   },
   page: {
     login: {
@@ -240,7 +241,52 @@ const local: App.I18n.Schema = {
       },
       mailLog: {
         info: 'Info'
-      }
+      },
+    },
+    settings: {
+      title: 'Settings',
+      intro: 'server.yaml only provides the initial values: everything saved here takes precedence without editing the file.',
+      yamlFile: 'Yaml file',
+      serverTime: 'Server time',
+      savedAt: 'Last saved',
+      save: 'Save',
+      saved: 'Settings saved',
+      saveFailed: 'Save failed',
+      reset: 'Reset to yaml defaults',
+      resetSuccess: 'Values reset from server.yaml',
+      resetFailed: 'Reset failed',
+      rustdeskWeb: 'RustDesk Web',
+      rustdeskWebHint: 'These are the values written to /web/rustdeskWeb.json and used by the RustDesk browser client.',
+      server: 'Server (hbbs)',
+      relay: 'Relay (hbbr)',
+      key: 'Public key',
+      webClientUrl: 'Web client URL',
+      webClientStatus: 'Web client',
+      webClientReady: 'The web client is installed and reachable at /web/',
+      webClientMissing: 'The web client is not present: copy the RustDesk build into the web folder next to the binary.',
+      openClient: 'Open the client',
+      timezone: 'Timezone',
+      timezoneCustom: 'IANA timezone',
+      timezoneHint: 'Used for the Created At / Closed At columns of the audit; records already stored keep their value.',
+      ldap: 'LDAP / Active Directory',
+      ldapEnabled: 'LDAP login',
+      activeDirectory: 'Active Directory present',
+      host: 'Host',
+      port: 'Port',
+      bindDn: 'Bind DN or account',
+      bindPassword: 'Bind password',
+      baseDn: 'Base DN',
+      userFilter: 'User filter',
+      useTls: 'LDAPS (direct TLS)',
+      startTls: 'StartTLS',
+      insecureSkipVerify: 'Skip certificate verification',
+      testUsername: 'Test username',
+      testUsernamePlaceholder: 'Test username (optional)',
+      testBind: 'Test bind',
+      testSuccess: 'LDAP bind succeeded',
+      testFailed: 'LDAP bind failed',
+      adDetected: 'Active Directory detected by the server',
+      ldapHint: 'The test saves nothing: try the values, then save.'
     }
   },
   dropdown: {

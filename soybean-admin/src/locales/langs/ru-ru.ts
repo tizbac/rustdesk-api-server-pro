@@ -169,7 +169,8 @@ const local: App.I18n.Schema = {
     audit_baselogs: 'Базовый журнал',
     audit_filetransferlogs: 'Журнал передачи файлов',
     devices: 'Устройства',
-    rustdesk_web: 'RustDesk Web'
+    rustdesk_web: 'RustDesk Web',
+    settings: 'Настройки'
   },
   page: {
     login: {
@@ -241,7 +242,52 @@ const local: App.I18n.Schema = {
       },
       mailLog: {
         info: 'Информация'
-      }
+      },
+    },
+    settings: {
+      title: 'Настройки',
+      intro: 'server.yaml задаёт только начальные значения: всё сохранённое здесь имеет приоритет, файл менять не нужно.',
+      yamlFile: 'Yaml-файл',
+      serverTime: 'Время сервера',
+      savedAt: 'Последнее сохранение',
+      save: 'Сохранить',
+      saved: 'Настройки сохранены',
+      saveFailed: 'Не удалось сохранить',
+      reset: 'Сбросить к значениям yaml',
+      resetSuccess: 'Значения восстановлены из server.yaml',
+      resetFailed: 'Не удалось сбросить',
+      rustdeskWeb: 'RustDesk Web',
+      rustdeskWebHint: 'Эти значения пишутся в /web/rustdeskWeb.json и используются веб-клиентом RustDesk.',
+      server: 'Сервер (hbbs)',
+      relay: 'Релей (hbbr)',
+      key: 'Публичный ключ',
+      webClientUrl: 'URL веб-клиента',
+      webClientStatus: 'Веб-клиент',
+      webClientReady: 'Веб-клиент установлен и доступен по /web/',
+      webClientMissing: 'Веб-клиент отсутствует: скопируйте сборку RustDesk в папку web рядом с бинарным файлом.',
+      openClient: 'Открыть клиент',
+      timezone: 'Часовой пояс',
+      timezoneCustom: 'Часовой пояс IANA',
+      timezoneHint: 'Используется для столбцов Created At / Closed At; уже сохранённые записи остаются без изменений.',
+      ldap: 'LDAP / Active Directory',
+      ldapEnabled: 'Вход через LDAP',
+      activeDirectory: 'Active Directory',
+      host: 'Хост',
+      port: 'Порт',
+      bindDn: 'Bind DN или учётная запись',
+      bindPassword: 'Пароль bind',
+      baseDn: 'Base DN',
+      userFilter: 'Фильтр пользователей',
+      useTls: 'LDAPS (прямой TLS)',
+      startTls: 'StartTLS',
+      insecureSkipVerify: 'Не проверять сертификат',
+      testUsername: 'Тестовый пользователь',
+      testUsernamePlaceholder: 'Тестовый пользователь (необязательно)',
+      testBind: 'Проверить bind',
+      testSuccess: 'Bind выполнен успешно',
+      testFailed: 'Bind не выполнен',
+      adDetected: 'Сервер распознал Active Directory',
+      ldapHint: 'Проверка ничего не сохраняет: сначала проверьте, затем сохраните.'
     }
   },
   dropdown: {

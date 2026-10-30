@@ -207,6 +207,70 @@ declare namespace Api {
   }
 
   /**
+   * namespace Settings
+   *
+   * backend api module: "settings"
+   */
+  namespace Settings {
+    interface RustdeskWebConfig {
+      server: string;
+      relay: string;
+      key: string;
+    }
+
+    interface LdapConfig {
+      enabled: boolean;
+      host: string;
+      port: number;
+      use_tls: boolean;
+      start_tls: boolean;
+      bind_dn: string;
+      bind_password: string;
+      base_dn: string;
+      user_filter: string;
+      insecure_skip_verify: boolean;
+      active_directory: boolean;
+    }
+
+    interface RuntimeSettings {
+      rustdeskWeb: RustdeskWebConfig;
+      webClient: { url: string };
+      timezone: string;
+      ldap: LdapConfig;
+      overrides?: string[];
+    }
+
+    interface LdapTestRequest extends LdapConfig {
+      test_username?: string;
+    }
+
+    interface LdapTestResult {
+      host: string;
+      port: number;
+      connected: boolean;
+      tls: boolean;
+      bindOK: boolean;
+      activeDirectoryDetected: boolean;
+      usersFound: number;
+      firstDN: string;
+      firstCN: string;
+      latencyMs: number;
+      steps: string[];
+      error?: string;
+    }
+
+    interface Data {
+      settings: RuntimeSettings;
+      defaults: RuntimeSettings;
+      timezones: string[];
+      webClient: { available: boolean };
+      yamlFile: string;
+      savedAt: string;
+      serverTime: string;
+    }
+  }
+
+  /**
    * namespace Route
    *
    * backend api module: "route"

@@ -40,6 +40,12 @@ export function setupElegantRouter() {
         meta.constant = true;
       }
 
+      // the settings entry is always the last one of the menu
+      if (routeName === 'settings') {
+        meta.icon = 'ph:settings';
+        meta.order = 99;
+      }
+
       return meta;
     }
   });

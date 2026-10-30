@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"rustdesk-api-server-pro/config"
+	"rustdesk-api-server-pro/app/service"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
@@ -16,9 +16,15 @@ func (c *ConfigController) BeforeActivation(b mvc.BeforeActivation) {
 }
 
 func (c *ConfigController) HandleConfig() mvc.Result {
-	cfg := config.GetServerConfig()
+	settings, err := service.GetRuntimeSettings(c.Db)
+	if err != nil {
+		return c.Error(err.Error(), "failed to load settings")
+	}
 
 	return c.Success(iris.Map{
-		"webClientUrl": cfg.WebClient.Url,
+		"webClientUrl": settings.WebClient.Url,
+		"rustdeskWeb":  settings.RustdeskWeb,
+		"timezone":     settings.TimeZone,
+		"ldapEnabled":  settings.Ldap.Enabled,
 	}, "ok")
 }

@@ -165,7 +165,8 @@ const local: App.I18n.Schema = {
     audit_baselogs: 'Log di base',
     audit_filetransferlogs: 'Log trasferimenti file',
     devices: 'Dispositivi',
-    rustdesk_web: 'RustDesk Web'
+    rustdesk_web: 'RustDesk Web',
+    settings: 'Impostazioni'
   },
   page: {
     login: {
@@ -237,7 +238,52 @@ const local: App.I18n.Schema = {
       },
       mailLog: {
         info: 'Informazioni'
-      }
+      },
+    },
+    settings: {
+      title: 'Impostazioni',
+      intro: 'server.yaml contiene solo i valori iniziali: tutto quello che salviamo qui ha la precedenza, senza toccare il file.',
+      yamlFile: 'File yaml',
+      serverTime: 'Ora del server',
+      savedAt: 'Ultimo salvataggio',
+      save: 'Salva',
+      saved: 'Impostazioni salvate',
+      saveFailed: 'Salvataggio fallito',
+      reset: 'Ripristina valori yaml',
+      resetSuccess: 'Valori ripristinati da server.yaml',
+      resetFailed: 'Ripristino fallito',
+      rustdeskWeb: 'RustDesk Web',
+      rustdeskWebHint: 'Sono i valori scritti in /web/rustdeskWeb.json e usati dal client RustDesk nel browser.',
+      server: 'Server (hbbs)',
+      relay: 'Relay (hbbr)',
+      key: 'Chiave pubblica',
+      webClientUrl: 'URL del client web',
+      webClientStatus: 'Client web',
+      webClientReady: 'Il client web è installato e raggiungibile su /web/',
+      webClientMissing: 'Il client web non è presente: copia la build di RustDesk nella cartella web accanto al binario.',
+      openClient: 'Apri il client',
+      timezone: 'Timezone',
+      timezoneCustom: 'Timezone IANA',
+      timezoneHint: 'Usato per le colonne Created At / Closed At dell’audit; le registrazioni già salvate conservano il loro valore.',
+      ldap: 'LDAP / Active Directory',
+      ldapEnabled: 'Login LDAP',
+      activeDirectory: 'Active Directory presente',
+      host: 'Host',
+      port: 'Porta',
+      bindDn: 'Bind DN o account',
+      bindPassword: 'Password di bind',
+      baseDn: 'Base DN',
+      userFilter: 'Filtro utente',
+      useTls: 'LDAPS (TLS diretto)',
+      startTls: 'StartTLS',
+      insecureSkipVerify: 'Ignora verifica del certificato',
+      testUsername: 'Utente di prova',
+      testUsernamePlaceholder: 'Utente di prova (facoltativo)',
+      testBind: 'Prova bind',
+      testSuccess: 'Bind LDAP riuscito',
+      testFailed: 'Bind LDAP fallito',
+      adDetected: 'Active Directory riconosciuta dal server',
+      ldapHint: 'Il test non salva nulla: prova i valori e poi salva.'
     }
   },
   dropdown: {

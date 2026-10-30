@@ -24,28 +24,31 @@ type ServerConfig struct {
 // it is served to the client as /web/rustdeskWeb.json.
 type RustdeskWebConfig struct {
 	// Server is the RustDesk rendezvous server, e.g. "hbbs.example.com:21116".
-	Server string `yaml:"server"`
+	Server string `yaml:"server" json:"server"`
 	// Relay is the RustDesk relay server, e.g. "hbbr.example.com:21115". Leave it empty to use the rendezvous server.
-	Relay string `yaml:"relay"`
+	Relay string `yaml:"relay" json:"relay"`
 	// Key is the base64 encoded public key from the id_ed25519.pub of the RustDesk server.
-	Key string `yaml:"key"`
+	Key string `yaml:"key" json:"key"`
 }
 
 type WebClientConfig struct {
-	Url string `yaml:"url"`
+	Url string `yaml:"url" json:"url"`
 }
 
 type LdapConfig struct {
-	Enabled            bool   `yaml:"enabled"`
-	Host               string `yaml:"host"`
-	Port               int    `yaml:"port"`
-	UseTLS             bool   `yaml:"use_tls"`
-	StartTLS           bool   `yaml:"start_tls"`
-	BindDN             string `yaml:"bind_dn"`
-	BindPassword       string `yaml:"bind_password"`
-	BaseDN             string `yaml:"base_dn"`
-	UserFilter         string `yaml:"user_filter"`
-	InsecureSkipVerify bool   `yaml:"insecure_skip_verify"`
+	Enabled            bool   `yaml:"enabled" json:"enabled"`
+	Host               string `yaml:"host" json:"host"`
+	Port               int    `yaml:"port" json:"port"`
+	UseTLS             bool   `yaml:"use_tls" json:"use_tls"`
+	StartTLS           bool   `yaml:"start_tls" json:"start_tls"`
+	BindDN             string `yaml:"bind_dn" json:"bind_dn"`
+	BindPassword       string `yaml:"bind_password" json:"bind_password"`
+	BaseDN             string `yaml:"base_dn" json:"base_dn"`
+	UserFilter         string `yaml:"user_filter" json:"user_filter"`
+	InsecureSkipVerify bool   `yaml:"insecure_skip_verify" json:"insecure_skip_verify"`
+	// ActiveDirectory marks the directory as a Microsoft AD. When the bind DN is
+	// not a full distinguished name it is bound as an AD account (UPN or DOMAIN\\user).
+	ActiveDirectory bool `yaml:"active_directory" json:"active_directory"`
 }
 
 type DbConfig struct {
@@ -82,6 +85,11 @@ var (
 	wd, _    = os.Getwd()
 	yamlFile = path.Join(wd, "server.yaml")
 )
+
+// YamlFile is the configuration file the defaults of the settings page come from.
+func YamlFile() string {
+	return yamlFile
+}
 
 func GetDefaultServerConfig() *ServerConfig {
 	return &ServerConfig{

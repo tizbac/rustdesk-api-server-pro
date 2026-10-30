@@ -24,6 +24,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   audit_filetransferlogs: () => import("@/views/audit/fileTransferLogs/index.vue"),
   devices: () => import("@/views/devices/index.vue"),
   home: () => import("@/views/home/index.vue"),
+  settings: () => import("@/views/settings/index.vue"),
   system_mail_logs: () => import("@/views/system/mail_logs/index.vue"),
   system_mail_template: () => import("@/views/system/mail_template/index.vue"),
   user_list: () => import("@/views/user/list/index.vue"),

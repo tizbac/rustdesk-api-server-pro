@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"rustdesk-api-server-pro/config"
 	"sync"
 	"time"
@@ -39,4 +40,22 @@ func NewEngine(cfg *config.DbConfig) (*xorm.Engine, error) {
 	engine.SetMaxOpenConns(25)
 	DbEngine = engine
 	return engine, nil
+}
+
+// SetTimeZone changes the timezone used to write and read datetime columns.
+// It takes effect for the records created from now on, the rows already stored
+// keep the time they were written with.
+func SetTimeZone(name string) error {
+	if DbEngine == nil {
+		return fmt.Errorf("database engine is not initialized")
+	}
+
+	location, err := time.LoadLocation(name)
+	if err != nil {
+		return fmt.Errorf("invalid timezone %q: %w", name, err)
+	}
+
+	DbEngine.TZLocation = location
+	DbEngine.DatabaseTZ = location
+	return nil
 }

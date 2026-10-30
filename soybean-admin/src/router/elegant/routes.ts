@@ -120,6 +120,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'settings',
+    path: '/settings',
+    component: 'layout.base$view.settings',
+    meta: {
+      title: 'settings',
+      i18nKey: 'route.settings',
+      icon: 'ph:settings',
+      order: 99
+    }
+  },
+  {
     name: 'system',
     path: '/system',
     component: 'layout.base',

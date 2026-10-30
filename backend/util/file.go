@@ -9,6 +9,22 @@ import (
 	"path/filepath"
 )
 
+// AssetDir resolves a directory shipped next to the binary, so the server keeps
+// serving dist and web when it is started from another working directory
+// (e.g. /app/data in the container), and falls back to the given path.
+func AssetDir(dir string) string {
+	if dir == "" || filepath.IsAbs(dir) {
+		return dir
+	}
+	if exe, err := os.Executable(); err == nil {
+		next := filepath.Join(filepath.Dir(exe), dir)
+		if _, err := os.Stat(next); err == nil {
+			return next
+		}
+	}
+	return dir
+}
+
 func FileExists(filePath string) bool {
 	_, err := os.Open(filePath)
 	if err != nil {

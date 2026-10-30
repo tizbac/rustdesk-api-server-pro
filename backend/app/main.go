@@ -2,11 +2,11 @@ package app
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"rustdesk-api-server-pro/app/middleware"
+	"rustdesk-api-server-pro/app/service"
 	"rustdesk-api-server-pro/config"
 	"rustdesk-api-server-pro/db"
+	"rustdesk-api-server-pro/util"
 
 	"github.com/kataras/iris/v12"
 )
@@ -20,6 +20,16 @@ func newApp(cfg *config.ServerConfig) (*iris.Application, error) {
 		return nil, err
 	}
 	app.RegisterDependency(dbEngine, cfg)
+
+	// the panel overrides server.yaml, apply the saved timezone before serving
+	settings, err := service.GetRuntimeSettings(dbEngine)
+	if err != nil {
+		app.Logger().Warn("could not load the saved settings:", err)
+	} else if settings.TimeZone != "" {
+		if err := db.SetTimeZone(settings.TimeZone); err != nil {
+			app.Logger().Warn("could not apply the saved timezone:", err)
+		}
+	}
 
 	app.OnErrorCode(iris.StatusNotFound, func(context iris.Context) {
 		requestInfo := fmt.Sprintf("(404)▶ %s:%s", context.Method(), context.Request().RequestURI)
@@ -40,25 +50,9 @@ func newApp(cfg *config.ServerConfig) (*iris.Application, error) {
 
 	SetRustdeskWebRoute(app, cfg)
 
-	app.HandleDir("/", iris.Dir(assetDir(cfg.HttpConfig.StaticDir)))
+	app.HandleDir("/", iris.Dir(util.AssetDir(cfg.HttpConfig.StaticDir)))
 
 	return app, nil
-}
-
-// assetDir prefers a directory shipped next to the binary, so the server keeps
-// serving dist and web when it is started from another working directory
-// (e.g. /app/data in the container), and falls back to the given path.
-func assetDir(dir string) string {
-	if dir == "" || filepath.IsAbs(dir) {
-		return dir
-	}
-	if exe, err := os.Executable(); err == nil {
-		next := filepath.Join(filepath.Dir(exe), dir)
-		if _, err := os.Stat(next); err == nil {
-			return next
-		}
-	}
-	return dir
 }
 
 func StartServer() (bool, error) {
