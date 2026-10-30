@@ -66,12 +66,12 @@ const {
     },
     {
       key: 'rustdesk_id',
-      title: $t('dataMap.audit.rustdesk_id'),
+      title: $t('dataMap.audit.controlled_id'),
       align: 'center'
     },
     {
       key: 'peer_id',
-      title: $t('dataMap.audit.peer_id'),
+      title: $t('dataMap.audit.controller_id'),
       align: 'center'
     },
     {

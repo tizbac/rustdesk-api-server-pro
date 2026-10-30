@@ -5,6 +5,7 @@ services:
     environment:
       - "ADMIN_USER=youruser" # optional
       - "ADMIN_PASS=yourpassword" # optional
+      - "TZ=Europe/Rome" # must match db.timeZone in server.yaml
     volumes:
       - ./server.yaml:/app/data/server.yaml
     network_mode: host

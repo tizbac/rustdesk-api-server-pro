@@ -1,6 +1,7 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Server API Rustdesk',
+    title: 'Portale Teleassistenza',
+    sponsors: 'In collaborazione con',
     updateTitle: 'Notifica aggiornamento versione di sistema',
     updateContent: 'È stata rilevata una nuova versione del sistema. Vuoi aggiornare subito la pagina?',
     updateConfirm: 'Aggiorna subito',
@@ -301,7 +302,8 @@ const local: App.I18n.Schema = {
       username: 'Nome utente',
       type: 'Tipo',
       conn_id: 'ID connessione',
-      rustdesk_id: 'ID Rustdesk',
+      controller_id: 'ID controllante',
+      controlled_id: 'ID controllato',
       ip: 'IP',
       session_id: 'ID sessione',
       uuid: 'UUID',
@@ -316,7 +318,6 @@ const local: App.I18n.Schema = {
         master_controlled: 'Master -> Controllato',
         controlled_master: 'Controllato -> Master'
       },
-      peer_id: 'ID peer',
       path: 'Percorso'
     },
     mailTemplate: {

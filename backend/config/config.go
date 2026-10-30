@@ -90,7 +90,7 @@ func GetDefaultServerConfig() *ServerConfig {
 			Driver:   "sqlite",
 			Dsn:      "./server.db",
 			ShowSql:  true,
-			TimeZone: "Asia/Shanghai",
+			TimeZone: "Europe/Rome",
 		},
 		HttpConfig: &HttpConfig{
 			Port:      ":8080",

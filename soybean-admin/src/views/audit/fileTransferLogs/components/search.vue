@@ -36,10 +36,10 @@ async function search() {
             <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.type')" path="type">
               <NSelect v-model:value="model.type" :options="translateOptions(AuditFileTransferTypeOptions)" clearable />
             </NFormItemGi>
-            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.rustdesk_id')" path="rustdesk_id">
+            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.controlled_id')" path="rustdesk_id">
               <NInput v-model:value="model.rustdesk_id" />
             </NFormItemGi>
-            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.peer_id')" path="peer_id">
+            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.controller_id')" path="peer_id">
               <NInput v-model:value="model.peer_id" />
             </NFormItemGi>
             <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.uuid')" path="uuid">

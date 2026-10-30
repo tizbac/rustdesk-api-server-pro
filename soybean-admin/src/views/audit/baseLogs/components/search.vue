@@ -39,7 +39,10 @@ async function search() {
             <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.conn_id')" path="conn_id">
               <NInput v-model:value="model.conn_id" />
             </NFormItemGi>
-            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.rustdesk_id')" path="rustdesk_id">
+            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.controller_id')" path="peer_id">
+              <NInput v-model:value="model.peer_id" />
+            </NFormItemGi>
+            <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.controlled_id')" path="rustdesk_id">
               <NInput v-model:value="model.rustdesk_id" />
             </NFormItemGi>
             <NFormItemGi span="24 s:12 m:6" :label="$t('dataMap.audit.ip')" path="ip">

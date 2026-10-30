@@ -1,6 +1,7 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Rustdesk Api Server',
+    title: 'Portale Teleassistenza',
+    sponsors: 'In partnership with',
     updateTitle: 'System Version Update Notification',
     updateContent: 'A new version of the system has been detected. Do you want to refresh the page immediately?',
     updateConfirm: 'Refresh immediately',
@@ -304,7 +305,8 @@ const local: App.I18n.Schema = {
       username: 'Username',
       type: 'Type',
       conn_id: 'Connect Id',
-      rustdesk_id: 'Rustdesk ID',
+      controller_id: 'Controller ID',
+      controlled_id: 'Controlled ID',
       ip: 'IP',
       session_id: 'Session Id',
       uuid: 'UUID',
@@ -319,7 +321,6 @@ const local: App.I18n.Schema = {
         master_controlled: 'Master -> Controlled',
         controlled_master: 'Controlled -> Master'
       },
-      peer_id: 'Peer ID',
       path: 'Path'
     },
     mailTemplate: {

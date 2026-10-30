@@ -1,6 +1,7 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Rustdesk Api Server',
+    title: 'Portale Teleassistenza',
+    sponsors: '合作伙伴',
     updateTitle: '系统版本更新通知',
     updateContent: '检测到系统有新版本发布，是否立即刷新页面？',
     updateConfirm: '立即刷新',
@@ -304,7 +305,8 @@ const local: App.I18n.Schema = {
       username: '用户名',
       type: '类型',
       conn_id: '连接ID',
-      rustdesk_id: 'RustdeskID',
+      controller_id: '主控ID',
+      controlled_id: '被控ID',
       ip: 'IP',
       session_id: '会话ID',
       uuid: 'UUID',
@@ -319,7 +321,6 @@ const local: App.I18n.Schema = {
         master_controlled: '主控 -> 被控',
         controlled_master: '被控 -> 主控'
       },
-      peer_id: '对端ID',
       path: '路径'
     },
     mailTemplate: {

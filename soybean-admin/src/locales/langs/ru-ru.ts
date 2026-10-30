@@ -1,6 +1,7 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Rustdesk Api Server',
+    title: 'Portale Teleassistenza',
+    sponsors: 'Партнёры',
     updateTitle: 'Уведомление об обновлении версии системы',
     updateContent: 'Обнаружена новая версия системы. Хотите обновить страницу немедленно?',
     updateConfirm: 'Обновить немедленно',
@@ -305,12 +306,13 @@ const local: App.I18n.Schema = {
       username: 'Имя',
       type: 'Тип',
       conn_id: 'Подключен',
-      rustdesk_id: 'Rustdesk ID',
+      controller_id: 'ID контроллера',
+      controlled_id: 'ID контролируемого',
       ip: 'IP',
       session_id: 'ID сессии',
       uuid: 'UUID',
       created_at: 'Создана',
-      closed_at: 'Закрыть',
+      closed_at: 'Закрыта',
       typeLabel: {
         remote_control: 'Удаленное управление',
         file_transfer: 'Передача файлов',
@@ -320,7 +322,6 @@ const local: App.I18n.Schema = {
         master_controlled: 'Главная - > Обвинения',
         controlled_master: 'Обвинение - > Главный'
       },
-      peer_id: 'Peer ID',
       path: 'Путь'
     },
     mailTemplate: {

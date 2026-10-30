@@ -40,6 +40,7 @@ RUN bash ./build_web.sh && rm -rf flutter/build/web/js/node_modules flutter/buil
 FROM alpine:3.20.3
 ENV ADMIN_USER=
 ENV ADMIN_PASS=
+ENV TZ=Europe/Rome
 WORKDIR /app
 COPY ./docker/start.sh .
 COPY --from=golang /backend/rustdesk-api-server-pro .

@@ -24,7 +24,7 @@ export function fetchCaptcha() {
 }
 
 export function fetchAuthLoginConfig() {
-  return request<{ ldapEnabled: boolean }>({ url: '/auth/login-config' });
+  return request<{ ldapEnabled: boolean }>({ url: '/auth/login/config' });
 }
 
 /** Get user info */

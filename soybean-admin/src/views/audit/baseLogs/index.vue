@@ -37,6 +37,7 @@ const {
     conn_id: null,
     type: null,
     rustdesk_id: null,
+    peer_id: null,
     ip: null,
     session_id: null,
     uuid: null,
@@ -73,8 +74,13 @@ const {
       align: 'center'
     },
     {
+      key: 'peer_id',
+      title: $t('dataMap.audit.controller_id'),
+      align: 'center'
+    },
+    {
       key: 'rustdesk_id',
-      title: $t('dataMap.audit.rustdesk_id'),
+      title: $t('dataMap.audit.controlled_id'),
       align: 'center'
     },
     {
@@ -100,7 +106,8 @@ const {
     {
       key: 'closed_at',
       title: $t('dataMap.audit.closed_at'),
-      align: 'center'
+      align: 'center',
+      render: row => row.closed_at ?? '-'
     }
   ]
 });
@@ -119,7 +126,7 @@ const {
         :data="data"
         size="small"
         :flex-height="!appStore.isMobile"
-        :scroll-x="962"
+        :scroll-x="1150"
         :loading="loading"
         remote
         :row-key="row => row.id"

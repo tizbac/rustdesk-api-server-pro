@@ -48,7 +48,6 @@ const bgColor = computed(() => {
     <NCard :bordered="false" class="relative z-4 w-auto rd-12px">
       <div class="w-400px lt-sm:w-300px">
         <header class="flex-y-center justify-between">
-          <SystemLogo class="text-64px text-primary lt-sm:text-48px" />
           <h3 class="text-28px text-primary font-500 lt-sm:text-22px">{{ $t('system.title') }}</h3>
           <div class="i-flex-col">
             <ThemeSchemaSwitch
@@ -73,6 +72,15 @@ const bgColor = computed(() => {
             </Transition>
           </div>
         </main>
+        <footer class="flex-center flex-wrap gap-12px pt-16px">
+          <a href="https://www.etitech.net" target="_blank" rel="noopener noreferrer">
+            <img src="@/assets/imgs/etitech-logo.png" class="h-28px" alt="Etitech" />
+          </a>
+          <span class="text-12px text-#646464">Powered by Oxygen Wireless</span>
+          <a href="https://oxygenwireless.net" target="_blank" rel="noopener noreferrer">
+            <img src="@/assets/imgs/oxygen-logo.png" class="h-32px" alt="Oxygen Wireless" />
+          </a>
+        </footer>
       </div>
     </NCard>
   </div>

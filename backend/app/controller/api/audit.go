@@ -64,7 +64,10 @@ func (c *AuditController) PostAuditConn() mvc.Result {
 			})
 		}
 		if action == "close" {
-			c.Db.Where("conn_id = ?", connId).Update(&model.Audit{
+			// conn_id is only unique inside one host process: every RustDesk host numbers
+			// its connections from 1, so a close from one host would otherwise stamp the
+			// "closed_at" of an unrelated host's row that happens to share the conn_id.
+			c.Db.Where("conn_id = ? and rustdesk_id = ?", connId, rustdeskId).Update(&model.Audit{
 				ClosedAt: time.Now(),
 			})
 		}
@@ -76,7 +79,7 @@ func (c *AuditController) PostAuditConn() mvc.Result {
 		t := gjson.GetBytes(body, "type").Int()
 		_type := int(t)
 		peer := peerResult.String()
-		c.Db.Where("conn_id = ?", connId).Update(&model.Audit{
+		c.Db.Where("conn_id = ? and rustdesk_id = ?", connId, rustdeskId).Update(&model.Audit{
 			SessionId: sessionId,
 			Type:      _type,
 			Peer:      peer,

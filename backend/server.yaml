@@ -3,7 +3,7 @@ debugMode: true # debug mode
 db:
   driver: "sqlite"
   dsn: "./server.db"
-  timeZone: "Asia/Shanghai" # setting the time zone fixes the database creation time problem
+  timeZone: "Europe/Rome" # timezone used for audit/session timestamps (must match the container TZ)
   showSql: false
 
   # driver: "mysql"

@@ -286,6 +286,7 @@ declare namespace App {
         updateContent: string;
         updateConfirm: string;
         updateCancel: string;
+        sponsors: string;
       };
       common: {
         action: string;
@@ -526,7 +527,8 @@ declare namespace App {
           username: string;
           type: string;
           conn_id: string;
-          rustdesk_id: string;
+          controller_id: string;
+          controlled_id: string;
           ip: string;
           session_id: string;
           uuid: string;
@@ -541,7 +543,6 @@ declare namespace App {
             master_controlled: string;
             controlled_master: string;
           };
-          peer_id: string;
           path: string;
         };
         mailTemplate: {

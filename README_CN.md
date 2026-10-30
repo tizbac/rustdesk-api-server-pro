@@ -86,7 +86,7 @@ debugMode: true # debug mode
 db:
   driver: "sqlite"
   dsn: "./server.db"
-  timeZone: "Asia/Shanghai" # setting the time zone fixes the database creation time problem
+  timeZone: "Europe/Rome" # setting the time zone fixes the database creation time problem
   showSql: false
 
   # driver: "mysql"
@@ -138,7 +138,7 @@ docker run \
 -d \
 -e ADMIN_USER=admin \ #管理员账号（可选）
 -e ADMIN_PASS=yourpassword \ #管理员密码（可选）
--e TZ=Asia/Shanghai \ #必须与 server.yaml 中的"timeZone"设置匹配
+-e TZ=Europe/Rome \ #必须与 server.yaml 中的"timeZone"设置匹配
 -p 8080:8080 \
 -v /your/path:/app/data \
 ghcr.io/lantongxue/rustdesk-api-server-pro:latest
@@ -190,7 +190,7 @@ services:
     environment:
       - "ADMIN_USER=youruser"
       - "ADMIN_PASS=yourpassword"
-      - "TZ=Asia/Shanghai"
+      - "TZ=Europe/Rome"
     volumes:
       - ./server.yaml:/app/data/server.yaml
     network_mode: host
